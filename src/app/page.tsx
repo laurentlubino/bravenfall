@@ -17,9 +17,23 @@ export default function Home() {
         width={666}
         height={666}
       />
-      <p className="text-2xl font-bold">
-        Face your own destiny in the shattered Marches of Bravenfall.
-      </p>
+      <h1
+        className="
+          text-xl
+          font-extrabold
+          text-amber-500
+          drop-shadow-[0_2px_10px_rgba(255,187,0,0.3)]
+          tracking-widest
+          uppercase
+          text-center
+        "
+        style={{
+          letterSpacing: '0.15em',
+          textShadow: '0 0 24px #ffb300, 0 0 8px #fff200, 0 0 2px #000',
+        }}
+      >
+        Face your destiny in the shattered Marches of Bravenfall.
+      </h1>
       <Link
         href="/game"
         className="
