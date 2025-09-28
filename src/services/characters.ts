@@ -18,6 +18,10 @@ type Item = {
 export type Character = {
   id: number;
   name: string;
+  level: number;
+  experience: number;
+  nextLevelExperience: number;
+  gold: number;
   avatarUrl: string;
   position: {
     mapId: number;
@@ -56,6 +60,10 @@ export const getCharacterById = async (id: number): Promise<Character> => {
   return {
     id,
     name: 'John Doe',
+    level: 1,
+    experience: 0,
+    nextLevelExperience: 100,
+    gold: 0,
     avatarUrl: 'https://via.placeholder.com/150',
     inventory: {
       items: [],
