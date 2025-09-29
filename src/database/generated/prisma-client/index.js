@@ -170,6 +170,10 @@ const config = {
         "fromEnvVar": null,
         "value": "darwin-arm64",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -195,8 +199,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/database/generated/prisma-client\"\n}\n\nmodel User {\n  id         Int         @id @default(autoincrement())\n  authId     String      @unique\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  name       String?\n  characters Character[]\n}\n\nenum CharacterClass {\n  WARRIOR\n  MAGE\n  RANGER\n  SPELLBLADE\n  ROGUE\n  TRICKSTER\n}\n\nmodel Character {\n  id             Int            @id @default(autoincrement())\n  createdAt      DateTime       @default(now())\n  updatedAt      DateTime       @updatedAt\n  userId         Int\n  user           User           @relation(fields: [userId], references: [id])\n  name           String\n  class          CharacterClass\n  position_x     Int\n  position_y     Int\n  position_mapId Int\n  position_map   Map            @relation(fields: [position_mapId], references: [id])\n}\n\nmodel Map {\n  id         Int         @id @default(autoincrement())\n  name       String\n  characters Character[]\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n}\n",
-  "inlineSchemaHash": "027332cca298d2583a57854327eb7050bb99b773b5bcf317e8e6d05e94b55ba6",
+  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/database/generated/prisma-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\nmodel User {\n  id         Int         @id @default(autoincrement())\n  authId     String      @unique\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  name       String?\n  characters Character[]\n}\n\nenum CharacterClass {\n  WARRIOR\n  MAGE\n  RANGER\n  SPELLBLADE\n  ROGUE\n  TRICKSTER\n}\n\nmodel Character {\n  id             Int            @id @default(autoincrement())\n  createdAt      DateTime       @default(now())\n  updatedAt      DateTime       @updatedAt\n  userId         Int\n  user           User           @relation(fields: [userId], references: [id])\n  name           String\n  class          CharacterClass\n  position_x     Int\n  position_y     Int\n  position_mapId Int\n  position_map   Map            @relation(fields: [position_mapId], references: [id])\n}\n\nmodel Map {\n  id         Int         @id @default(autoincrement())\n  name       String\n  characters Character[]\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n}\n",
+  "inlineSchemaHash": "55a9e763098acb75bab08b0bc7fe2ecf979cb0a4a0a226f9aa860ac0443b2bff",
   "copyEngine": true
 }
 
@@ -237,6 +241,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
 path.join(process.cwd(), "src/database/generated/prisma-client/libquery_engine-darwin-arm64.dylib.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/database/generated/prisma-client/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/database/generated/prisma-client/schema.prisma")
