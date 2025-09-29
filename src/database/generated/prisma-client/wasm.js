@@ -94,9 +94,29 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  authId: 'authId',
   createdAt: 'createdAt',
-  email: 'email',
+  updatedAt: 'updatedAt',
   name: 'name'
+};
+
+exports.Prisma.CharacterScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  name: 'name',
+  class: 'class',
+  position_x: 'position_x',
+  position_y: 'position_y',
+  position_mapId: 'position_mapId'
+};
+
+exports.Prisma.MapScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -113,10 +133,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.CharacterClass = exports.$Enums.CharacterClass = {
+  WARRIOR: 'WARRIOR',
+  MAGE: 'MAGE',
+  RANGER: 'RANGER',
+  SPELLBLADE: 'SPELLBLADE',
+  ROGUE: 'ROGUE',
+  TRICKSTER: 'TRICKSTER'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Character: 'Character',
+  Map: 'Map'
 };
 /**
  * Create the Client
@@ -160,25 +189,32 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": "DATABASE_DATABASE_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/database/generated/prisma-client\"\n}\n\n// Example data model\nmodel User {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  email     String   @unique\n  name      String?\n}\n",
-  "inlineSchemaHash": "1ddf74aea17895821fa90292157e8aeb65fadc9ec578829f7092319ca04afdca",
-  "copyEngine": false
+  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/database/generated/prisma-client\"\n}\n\nmodel User {\n  id         Int         @id @default(autoincrement())\n  authId     String      @unique\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  name       String?\n  characters Character[]\n}\n\nenum CharacterClass {\n  WARRIOR\n  MAGE\n  RANGER\n  SPELLBLADE\n  ROGUE\n  TRICKSTER\n}\n\nmodel Character {\n  id             Int            @id @default(autoincrement())\n  createdAt      DateTime       @default(now())\n  updatedAt      DateTime       @updatedAt\n  userId         Int\n  user           User           @relation(fields: [userId], references: [id])\n  name           String\n  class          CharacterClass\n  position_x     Int\n  position_y     Int\n  position_mapId Int\n  position_map   Map            @relation(fields: [position_mapId], references: [id])\n}\n\nmodel Map {\n  id         Int         @id @default(autoincrement())\n  name       String\n  characters Character[]\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n}\n",
+  "inlineSchemaHash": "027332cca298d2583a57854327eb7050bb99b773b5bcf317e8e6d05e94b55ba6",
+  "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"authId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToUser\"}],\"dbName\":null},\"Character\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CharacterToUser\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"class\",\"kind\":\"enum\",\"type\":\"CharacterClass\"},{\"name\":\"position_x\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_y\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_mapId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_map\",\"kind\":\"object\",\"type\":\"Map\",\"relationName\":\"CharacterToMap\"}],\"dbName\":null},\"Map\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToMap\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
-config.engineWasm = undefined
+config.engineWasm = {
+  getRuntime: async () => require('./query_engine_bg.js'),
+  getQueryEngineWasmModule: async () => {
+    const loader = (await import('#wasm-engine-loader')).default
+    const engine = (await loader).default
+    return engine
+  }
+}
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
   parsed: {
-    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+    DATABASE_DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_DATABASE_URL || undefined
   }
 })
 

@@ -122,9 +122,29 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  authId: 'authId',
   createdAt: 'createdAt',
-  email: 'email',
+  updatedAt: 'updatedAt',
   name: 'name'
+};
+
+exports.Prisma.CharacterScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  name: 'name',
+  class: 'class',
+  position_x: 'position_x',
+  position_y: 'position_y',
+  position_mapId: 'position_mapId'
+};
+
+exports.Prisma.MapScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -141,10 +161,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.CharacterClass = exports.$Enums.CharacterClass = {
+  WARRIOR: 'WARRIOR',
+  MAGE: 'MAGE',
+  RANGER: 'RANGER',
+  SPELLBLADE: 'SPELLBLADE',
+  ROGUE: 'ROGUE',
+  TRICKSTER: 'TRICKSTER'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Character: 'Character',
+  Map: 'Map'
 };
 
 /**

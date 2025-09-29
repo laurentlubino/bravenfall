@@ -1,7 +1,7 @@
 // Define database connection via the `DATABASE_URL` env var
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_DATABASE_URL")
 }
 
 // Define custom output path for generated Prisma Client
@@ -10,10 +10,42 @@ generator client {
   output   = "../src/database/generated/prisma-client"
 }
 
-// Example data model
 model User {
   id        Int      @id @default(autoincrement())
+  authId    String   @unique
   createdAt DateTime @default(now())
-  email     String   @unique
+  updatedAt DateTime @updatedAt
   name      String?
+  characters Character[]
+}
+
+enum CharacterClass {
+  WARRIOR
+  MAGE
+  RANGER
+  SPELLBLADE
+  ROGUE
+  TRICKSTER
+}
+
+model Character {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  class     CharacterClass
+  position_x Int
+  position_y Int
+  position_mapId Int
+  position_map Map @relation(fields: [position_mapId], references: [id])
+}
+
+model Map {
+  id        Int      @id @default(autoincrement())
+  name      String
+  characters Character[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
