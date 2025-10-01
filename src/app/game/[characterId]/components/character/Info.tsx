@@ -1,4 +1,4 @@
-import { Character as CharacterType } from '@/services/characters';
+import { Character as CharacterType } from '@/data/characters';
 
 type InfoProps = {
   character: CharacterType;

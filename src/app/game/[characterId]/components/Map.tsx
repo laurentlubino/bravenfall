@@ -1,4 +1,4 @@
-import { Map as MapType } from '@/services/maps';
+import { Map as MapType } from '@/data/maps';
 
 type MapProps = {
   map: MapType;

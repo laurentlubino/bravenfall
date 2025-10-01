@@ -1,4 +1,4 @@
-import { Stats as StatsType } from '@/services/characters';
+import { Stats as StatsType } from '@/data/characters';
 
 type StatsProps = {
   stats: StatsType;

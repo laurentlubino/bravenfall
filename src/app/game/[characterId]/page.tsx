@@ -1,5 +1,5 @@
-import { getCharacterById } from '@/services/characters';
-import { getMapById } from '@/services/maps';
+import { getCharacterById } from '@/data/characters';
+import { getMapById } from '@/data/maps';
 import { Actions } from './components/actions/Actions';
 import { Character } from './components/character/Character';
 import { Map } from './components/Map';

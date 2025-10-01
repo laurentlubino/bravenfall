@@ -1,4 +1,4 @@
-import { Equipment as EquipmentType } from '@/services/characters';
+import { Equipment as EquipmentType } from '@/data/characters';
 
 type EquipmentProps = {
   equipment: EquipmentType;

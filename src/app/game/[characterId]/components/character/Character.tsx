@@ -1,4 +1,4 @@
-import { Character as CharacterType } from '@/services/characters';
+import { Character as CharacterType } from '@/data/characters';
 import { Equipment } from './Equipment';
 import { Info } from './Info';
 import { Inventory } from './Inventory';

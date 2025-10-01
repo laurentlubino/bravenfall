@@ -1,4 +1,4 @@
-import { Inventory as InventoryType } from '@/services/characters';
+import { Inventory as InventoryType } from '@/data/characters';
 
 type InventoryProps = {
   inventory: InventoryType;

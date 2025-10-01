@@ -1,4 +1,4 @@
-import { getUserByAuthId } from '@/services/users';
+import { getUserByAuthId } from '@/data/users';
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
 import { currentUser } from '@clerk/nextjs/server';
 import { Suspense } from 'react';

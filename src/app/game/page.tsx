@@ -1,4 +1,4 @@
-import { getAuth } from '@/services/auth';
+import { getAuth } from '@/data/auth';
 
 export default async function Game() {
   const { userId } = await getAuth();
