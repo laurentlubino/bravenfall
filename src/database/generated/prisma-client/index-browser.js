@@ -137,14 +137,88 @@ exports.Prisma.CharacterScalarFieldEnum = {
   class: 'class',
   position_x: 'position_x',
   position_y: 'position_y',
-  position_mapId: 'position_mapId'
+  position_mapId: 'position_mapId',
+  statisticId: 'statisticId',
+  inventoryId: 'inventoryId'
+};
+
+exports.Prisma.StatisticScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  health: 'health',
+  mana: 'mana',
+  strength: 'strength',
+  dexterity: 'dexterity',
+  intelligence: 'intelligence'
+};
+
+exports.Prisma.ItemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  price: 'price',
+  type: 'type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InventoryScalarFieldEnum = {
+  id: 'id',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  characterId: 'characterId'
+};
+
+exports.Prisma.InventoryItemScalarFieldEnum = {
+  id: 'id',
+  inventoryId: 'inventoryId',
+  itemId: 'itemId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MapScalarFieldEnum = {
   id: 'id',
+  order: 'order',
   name: 'name',
+  size_x: 'size_x',
+  size_y: 'size_y',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TileScalarFieldEnum = {
+  id: 'id',
+  row: 'row',
+  col: 'col',
+  name: 'name',
+  type: 'type',
+  mapId: 'mapId'
+};
+
+exports.Prisma.TileEnemyScalarFieldEnum = {
+  id: 'id',
+  tileId: 'tileId',
+  enemyId: 'enemyId',
+  levelMin: 'levelMin',
+  levelMax: 'levelMax',
+  goldMin: 'goldMin',
+  goldMax: 'goldMax',
+  experienceMin: 'experienceMin',
+  experienceMax: 'experienceMax'
+};
+
+exports.Prisma.MonsterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  statisticId: 'statisticId'
 };
 
 exports.Prisma.SortOrder = {
@@ -170,10 +244,25 @@ exports.CharacterClass = exports.$Enums.CharacterClass = {
   TRICKSTER: 'TRICKSTER'
 };
 
+exports.ItemType = exports.$Enums.ItemType = {
+  GOLD: 'GOLD',
+  WEAPON: 'WEAPON',
+  ARMOR: 'ARMOR',
+  ACCESSORY: 'ACCESSORY',
+  CONSUMABLE: 'CONSUMABLE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Character: 'Character',
-  Map: 'Map'
+  Statistic: 'Statistic',
+  Item: 'Item',
+  Inventory: 'Inventory',
+  InventoryItem: 'InventoryItem',
+  Map: 'Map',
+  Tile: 'Tile',
+  TileEnemy: 'TileEnemy',
+  Monster: 'Monster'
 };
 
 /**

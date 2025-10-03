@@ -109,14 +109,88 @@ exports.Prisma.CharacterScalarFieldEnum = {
   class: 'class',
   position_x: 'position_x',
   position_y: 'position_y',
-  position_mapId: 'position_mapId'
+  position_mapId: 'position_mapId',
+  statisticId: 'statisticId',
+  inventoryId: 'inventoryId'
+};
+
+exports.Prisma.StatisticScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  health: 'health',
+  mana: 'mana',
+  strength: 'strength',
+  dexterity: 'dexterity',
+  intelligence: 'intelligence'
+};
+
+exports.Prisma.ItemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  price: 'price',
+  type: 'type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InventoryScalarFieldEnum = {
+  id: 'id',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  characterId: 'characterId'
+};
+
+exports.Prisma.InventoryItemScalarFieldEnum = {
+  id: 'id',
+  inventoryId: 'inventoryId',
+  itemId: 'itemId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MapScalarFieldEnum = {
   id: 'id',
+  order: 'order',
   name: 'name',
+  size_x: 'size_x',
+  size_y: 'size_y',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TileScalarFieldEnum = {
+  id: 'id',
+  row: 'row',
+  col: 'col',
+  name: 'name',
+  type: 'type',
+  mapId: 'mapId'
+};
+
+exports.Prisma.TileEnemyScalarFieldEnum = {
+  id: 'id',
+  tileId: 'tileId',
+  enemyId: 'enemyId',
+  levelMin: 'levelMin',
+  levelMax: 'levelMax',
+  goldMin: 'goldMin',
+  goldMax: 'goldMax',
+  experienceMin: 'experienceMin',
+  experienceMax: 'experienceMax'
+};
+
+exports.Prisma.MonsterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  statisticId: 'statisticId'
 };
 
 exports.Prisma.SortOrder = {
@@ -142,10 +216,36 @@ exports.CharacterClass = exports.$Enums.CharacterClass = {
   TRICKSTER: 'TRICKSTER'
 };
 
+exports.ItemType = exports.$Enums.ItemType = {
+  GOLD: 'GOLD',
+  WEAPON: 'WEAPON',
+  ARMOR: 'ARMOR',
+  ACCESSORY: 'ACCESSORY',
+  CONSUMABLE: 'CONSUMABLE'
+};
+
+exports.TileType = exports.$Enums.TileType = {
+  GRASS: 'GRASS',
+  WATER: 'WATER',
+  FOREST: 'FOREST',
+  MOUNTAIN: 'MOUNTAIN',
+  MOUNTAIN_WATERFALL: 'MOUNTAIN_WATERFALL',
+  DESERT: 'DESERT',
+  VILLAGE: 'VILLAGE',
+  CASTLE: 'CASTLE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Character: 'Character',
-  Map: 'Map'
+  Statistic: 'Statistic',
+  Item: 'Item',
+  Inventory: 'Inventory',
+  InventoryItem: 'InventoryItem',
+  Map: 'Map',
+  Tile: 'Tile',
+  TileEnemy: 'TileEnemy',
+  Monster: 'Monster'
 };
 /**
  * Create the Client
@@ -180,7 +280,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../../../../prisma",
   "clientVersion": "6.16.2",
@@ -198,13 +299,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/database/generated/prisma-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\nmodel User {\n  id         Int         @id @default(autoincrement())\n  authId     String      @unique\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  name       String?\n  characters Character[]\n}\n\nenum CharacterClass {\n  WARRIOR\n  MAGE\n  RANGER\n  SPELLBLADE\n  ROGUE\n  TRICKSTER\n}\n\nmodel Character {\n  id             Int            @id @default(autoincrement())\n  createdAt      DateTime       @default(now())\n  updatedAt      DateTime       @updatedAt\n  userId         Int\n  user           User           @relation(fields: [userId], references: [id])\n  name           String\n  class          CharacterClass\n  position_x     Int\n  position_y     Int\n  position_mapId Int\n  position_map   Map            @relation(fields: [position_mapId], references: [id])\n}\n\nmodel Map {\n  id         Int         @id @default(autoincrement())\n  name       String\n  characters Character[]\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n}\n",
-  "inlineSchemaHash": "55a9e763098acb75bab08b0bc7fe2ecf979cb0a4a0a226f9aa860ac0443b2bff",
+  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/database/generated/prisma-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\nmodel User {\n  id         String      @id @default(uuid())\n  authId     String      @unique\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n  name       String?\n  characters Character[]\n}\n\nenum CharacterClass {\n  WARRIOR\n  MAGE\n  RANGER\n  SPELLBLADE\n  ROGUE\n  TRICKSTER\n}\n\nmodel Character {\n  id             String         @id @default(uuid())\n  createdAt      DateTime       @default(now())\n  updatedAt      DateTime       @updatedAt\n  userId         String\n  user           User           @relation(fields: [userId], references: [id])\n  name           String\n  class          CharacterClass\n  position_x     Int\n  position_y     Int\n  position_mapId String\n  position_map   Map            @relation(fields: [position_mapId], references: [id])\n  statisticId    String\n  statistic      Statistic      @relation(fields: [statisticId], references: [id])\n  inventoryId    String\n  inventory      Inventory      @relation(fields: [inventoryId], references: [id])\n}\n\nmodel Statistic {\n  id           String      @id @default(uuid())\n  createdAt    DateTime    @default(now())\n  updatedAt    DateTime    @updatedAt\n  health       Int\n  mana         Int\n  strength     Int\n  dexterity    Int\n  intelligence Int\n  monsters     Monster[]\n  characters   Character[]\n}\n\nenum ItemType {\n  GOLD\n  WEAPON\n  ARMOR\n  ACCESSORY\n  CONSUMABLE\n}\n\nmodel Item {\n  id             String          @id @default(uuid())\n  name           String\n  description    String\n  imageUrl       String\n  price          Int\n  type           ItemType\n  createdAt      DateTime        @default(now())\n  updatedAt      DateTime        @updatedAt\n  inventoryItems InventoryItem[]\n  tileEnemies    TileEnemy[]\n}\n\nmodel Inventory {\n  id          String          @id @default(uuid())\n  quantity    Int\n  createdAt   DateTime        @default(now())\n  updatedAt   DateTime        @updatedAt\n  characterId String\n  items       InventoryItem[]\n  characters  Character[]\n}\n\nmodel InventoryItem {\n  id          String    @id @default(uuid())\n  inventoryId String\n  inventory   Inventory @relation(fields: [inventoryId], references: [id])\n  itemId      String\n  item        Item      @relation(fields: [itemId], references: [id])\n  quantity    Int\n  createdAt   DateTime  @default(now())\n  updatedAt   DateTime  @updatedAt\n}\n\nmodel Map {\n  id         String      @id @default(uuid())\n  order      Int\n  name       String\n  characters Character[]\n  size_x     Int\n  size_y     Int\n  tiles      Tile[]\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n}\n\nenum TileType {\n  GRASS\n  WATER\n  FOREST\n  MOUNTAIN\n  MOUNTAIN_WATERFALL\n  DESERT\n  VILLAGE\n  CASTLE\n}\n\nmodel Tile {\n  id      String      @id @default(uuid())\n  row     Int\n  col     Int\n  name    String\n  type    String\n  enemies TileEnemy[]\n  map     Map         @relation(fields: [mapId], references: [id])\n  mapId   String\n}\n\nmodel TileEnemy {\n  id            String  @id @default(uuid())\n  tileId        String\n  tile          Tile    @relation(fields: [tileId], references: [id])\n  enemyId       String\n  enemy         Monster @relation(fields: [enemyId], references: [id])\n  levelMin      Int\n  levelMax      Int\n  goldMin       Int\n  goldMax       Int\n  experienceMin Int\n  experienceMax Int\n  items         Item[]\n}\n\nmodel Monster {\n  id          String      @id @default(uuid())\n  name        String\n  description String\n  createdAt   DateTime    @default(now())\n  updatedAt   DateTime    @updatedAt\n  statisticId String\n  statistic   Statistic   @relation(fields: [statisticId], references: [id])\n  tileEnemies TileEnemy[]\n}\n",
+  "inlineSchemaHash": "25f8b1b0a5621baa695867862aea45aa8626590c90ea277145ed2263d4affbc8",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"authId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToUser\"}],\"dbName\":null},\"Character\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CharacterToUser\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"class\",\"kind\":\"enum\",\"type\":\"CharacterClass\"},{\"name\":\"position_x\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_y\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_mapId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_map\",\"kind\":\"object\",\"type\":\"Map\",\"relationName\":\"CharacterToMap\"}],\"dbName\":null},\"Map\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToMap\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"authId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToUser\"}],\"dbName\":null},\"Character\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CharacterToUser\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"class\",\"kind\":\"enum\",\"type\":\"CharacterClass\"},{\"name\":\"position_x\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_y\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position_mapId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"position_map\",\"kind\":\"object\",\"type\":\"Map\",\"relationName\":\"CharacterToMap\"},{\"name\":\"statisticId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"statistic\",\"kind\":\"object\",\"type\":\"Statistic\",\"relationName\":\"CharacterToStatistic\"},{\"name\":\"inventoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventory\",\"kind\":\"object\",\"type\":\"Inventory\",\"relationName\":\"CharacterToInventory\"}],\"dbName\":null},\"Statistic\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"health\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"mana\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"strength\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dexterity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"intelligence\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"monsters\",\"kind\":\"object\",\"type\":\"Monster\",\"relationName\":\"MonsterToStatistic\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToStatistic\"}],\"dbName\":null},\"Item\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"ItemType\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"inventoryItems\",\"kind\":\"object\",\"type\":\"InventoryItem\",\"relationName\":\"InventoryItemToItem\"},{\"name\":\"tileEnemies\",\"kind\":\"object\",\"type\":\"TileEnemy\",\"relationName\":\"ItemToTileEnemy\"}],\"dbName\":null},\"Inventory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"characterId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"items\",\"kind\":\"object\",\"type\":\"InventoryItem\",\"relationName\":\"InventoryToInventoryItem\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToInventory\"}],\"dbName\":null},\"InventoryItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventory\",\"kind\":\"object\",\"type\":\"Inventory\",\"relationName\":\"InventoryToInventoryItem\"},{\"name\":\"itemId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"item\",\"kind\":\"object\",\"type\":\"Item\",\"relationName\":\"InventoryItemToItem\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Map\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"characters\",\"kind\":\"object\",\"type\":\"Character\",\"relationName\":\"CharacterToMap\"},{\"name\":\"size_x\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"size_y\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tiles\",\"kind\":\"object\",\"type\":\"Tile\",\"relationName\":\"MapToTile\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Tile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"row\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"col\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"enemies\",\"kind\":\"object\",\"type\":\"TileEnemy\",\"relationName\":\"TileToTileEnemy\"},{\"name\":\"map\",\"kind\":\"object\",\"type\":\"Map\",\"relationName\":\"MapToTile\"},{\"name\":\"mapId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"TileEnemy\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tileId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tile\",\"kind\":\"object\",\"type\":\"Tile\",\"relationName\":\"TileToTileEnemy\"},{\"name\":\"enemyId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"enemy\",\"kind\":\"object\",\"type\":\"Monster\",\"relationName\":\"MonsterToTileEnemy\"},{\"name\":\"levelMin\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"levelMax\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"goldMin\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"goldMax\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"experienceMin\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"experienceMax\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"items\",\"kind\":\"object\",\"type\":\"Item\",\"relationName\":\"ItemToTileEnemy\"}],\"dbName\":null},\"Monster\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"statisticId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"statistic\",\"kind\":\"object\",\"type\":\"Statistic\",\"relationName\":\"MonsterToStatistic\"},{\"name\":\"tileEnemies\",\"kind\":\"object\",\"type\":\"TileEnemy\",\"relationName\":\"MonsterToTileEnemy\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

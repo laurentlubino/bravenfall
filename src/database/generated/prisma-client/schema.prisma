@@ -12,7 +12,7 @@ generator client {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
   authId     String      @unique
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -30,23 +30,134 @@ enum CharacterClass {
 }
 
 model Character {
-  id             Int            @id @default(autoincrement())
+  id             String         @id @default(uuid())
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-  userId         Int
+  userId         String
   user           User           @relation(fields: [userId], references: [id])
   name           String
   class          CharacterClass
   position_x     Int
   position_y     Int
-  position_mapId Int
+  position_mapId String
   position_map   Map            @relation(fields: [position_mapId], references: [id])
+  statisticId    String
+  statistic      Statistic      @relation(fields: [statisticId], references: [id])
+  inventoryId    String
+  inventory      Inventory      @relation(fields: [inventoryId], references: [id])
+}
+
+model Statistic {
+  id           String      @id @default(uuid())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  health       Int
+  mana         Int
+  strength     Int
+  dexterity    Int
+  intelligence Int
+  monsters     Monster[]
+  characters   Character[]
+}
+
+enum ItemType {
+  GOLD
+  WEAPON
+  ARMOR
+  ACCESSORY
+  CONSUMABLE
+}
+
+model Item {
+  id             String          @id @default(uuid())
+  name           String
+  description    String
+  imageUrl       String
+  price          Int
+  type           ItemType
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  inventoryItems InventoryItem[]
+  tileEnemies    TileEnemy[]
+}
+
+model Inventory {
+  id          String          @id @default(uuid())
+  quantity    Int
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  characterId String
+  items       InventoryItem[]
+  characters  Character[]
+}
+
+model InventoryItem {
+  id          String    @id @default(uuid())
+  inventoryId String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  itemId      String
+  item        Item      @relation(fields: [itemId], references: [id])
+  quantity    Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Map {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
+  order      Int
   name       String
   characters Character[]
+  size_x     Int
+  size_y     Int
+  tiles      Tile[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+}
+
+enum TileType {
+  GRASS
+  WATER
+  FOREST
+  MOUNTAIN
+  MOUNTAIN_WATERFALL
+  DESERT
+  VILLAGE
+  CASTLE
+}
+
+model Tile {
+  id      String      @id @default(uuid())
+  row     Int
+  col     Int
+  name    String
+  type    String
+  enemies TileEnemy[]
+  map     Map         @relation(fields: [mapId], references: [id])
+  mapId   String
+}
+
+model TileEnemy {
+  id            String  @id @default(uuid())
+  tileId        String
+  tile          Tile    @relation(fields: [tileId], references: [id])
+  enemyId       String
+  enemy         Monster @relation(fields: [enemyId], references: [id])
+  levelMin      Int
+  levelMax      Int
+  goldMin       Int
+  goldMax       Int
+  experienceMin Int
+  experienceMax Int
+  items         Item[]
+}
+
+model Monster {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  statisticId String
+  statistic   Statistic   @relation(fields: [statisticId], references: [id])
+  tileEnemies TileEnemy[]
 }
