@@ -1,5 +1,6 @@
 import { Table } from '@/components/Table';
 import { getMonsters } from '@/data/monsters';
+import { PageHeader } from '../components/PageHeader';
 
 const TABLE_HEADERS = [
   {
@@ -35,12 +36,13 @@ export default async function MonstersPage() {
 
   return (
     <div className="w-full h-full p-6">
-      <div className="flex flex-row justify-between items-center p-4 mb-4 border-b border-gray-200/20">
-        <h1>Monsters</h1>
-        <div>
-          <button>Create Monster</button>
-        </div>
-      </div>
+      <PageHeader
+        title="Monsters"
+        create={{
+          label: 'Create Monster',
+          href: '/game/studio/monsters/create',
+        }}
+      />
       <div className="w-full h-full">
         <Table
           color="transparent"

@@ -1,5 +1,6 @@
 import { Table } from '@/components/Table';
 import { getItems } from '@/data/items';
+import { PageHeader } from '../components/PageHeader';
 
 const TABLE_HEADERS = [
   {
@@ -33,12 +34,10 @@ export default async function ItemsPage() {
 
   return (
     <div className="w-full h-full p-6">
-      <div className="flex flex-row justify-between items-center p-4 mb-4 border-b border-gray-200/20">
-        <h1>Items</h1>
-        <div>
-          <button>Create Item</button>
-        </div>
-      </div>
+      <PageHeader
+        title="Items"
+        create={{ label: 'Create Item', href: '/game/studio/items/create' }}
+      />
       <div className="w-full h-full">
         <Table
           color="transparent"

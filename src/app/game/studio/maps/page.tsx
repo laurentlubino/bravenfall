@@ -1,5 +1,6 @@
 import { Table } from '@/components/Table';
 import { getMaps } from '@/data/maps';
+import { PageHeader } from '../components/PageHeader';
 
 const TABLE_HEADERS = [
   {
@@ -44,12 +45,10 @@ export default async function MapsPage() {
 
   return (
     <div className="w-full h-full p-6">
-      <div className="flex flex-row justify-between items-center p-4 mb-4 border-b border-gray-200/20">
-        <h1>Maps</h1>
-        <div>
-          <button>Create Map</button>
-        </div>
-      </div>
+      <PageHeader
+        title="Maps"
+        create={{ label: 'Create Map', href: '/game/studio/maps/create' }}
+      />
       <div className="w-full h-full">
         <Table
           color="transparent"
