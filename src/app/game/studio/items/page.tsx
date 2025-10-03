@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { Table } from '@/components/Table';
 import { getItems } from '@/data/items';
 import { PageHeader } from '../components/PageHeader';

@@ -1,15 +1,17 @@
-'use client';
+import 'server-only';
+
 import { getCharacter } from '@/data/characters';
-import { getMap } from '@/data/maps';
-import { useParams } from 'next/navigation';
 import { Actions } from './components/actions/Actions';
 import { Character } from './components/character/Character';
 import { Map } from './components/map/Map';
 
-export default async function Game() {
-  const { characterId } = useParams<{ characterId: string }>();
-  const character = await getCharacter(characterId);
-  const map = await getMap(character.position_mapId);
+export default async function Game({
+  params,
+}: {
+  params: { characterId: string };
+}) {
+  const character = await getCharacter(params.characterId);
+
   return (
     <div className="flex flex-row w-full h-screen">
       <div className="flex flex-col w-1/2">

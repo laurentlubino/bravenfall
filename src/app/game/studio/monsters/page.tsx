@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { Table } from '@/components/Table';
 import { getMonsters } from '@/data/monsters';
 import { PageHeader } from '../components/PageHeader';
