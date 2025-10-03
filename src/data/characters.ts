@@ -11,6 +11,10 @@ export const getCharacters = cache(async () => {
     where: {
       userId: user.id,
     },
+    include: {
+      position: true,
+      statistic: true,
+    },
   });
   return characters;
 });
@@ -20,6 +24,21 @@ export const getCharacter = cache(async (id: string) => {
 
   const character = await prisma.character.findUnique({
     where: { id },
+    include: {
+      position: true,
+      actionPoints: true,
+      statistic: true,
+      inventory: {
+        include: {
+          items: {
+            include: {
+              item: true,
+            },
+          },
+        },
+      },
+      equipment: true,
+    },
   });
   if (character?.userId !== user.id) {
     throw new ForbiddenError();

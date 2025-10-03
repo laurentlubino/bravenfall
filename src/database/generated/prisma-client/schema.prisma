@@ -30,34 +30,75 @@ enum CharacterClass {
 }
 
 model Character {
-  id             String         @id @default(uuid())
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  userId         String
-  user           User           @relation(fields: [userId], references: [id])
-  name           String
-  class          CharacterClass
-  position_x     Int
-  position_y     Int
-  position_mapId String
-  position_map   Map            @relation(fields: [position_mapId], references: [id])
-  statisticId    String
-  statistic      Statistic      @relation(fields: [statisticId], references: [id])
-  inventoryId    String
-  inventory      Inventory      @relation(fields: [inventoryId], references: [id])
+  id           String             @id @default(uuid())
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  name         String
+  class        CharacterClass
+  actionPoints ActionPoints?
+  position     CharacterPosition?
+  statistic    Statistic?
+  inventory    Inventory?
+  equipment    Equipment?
+  userId       String
+  user         User               @relation(fields: [userId], references: [id])
+  Map          Map?               @relation(fields: [mapId], references: [id])
+  mapId        String?
+}
+
+model ActionPoints {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  move        Int
+  attack      Int
+  characterId String    @unique
+  character   Character @relation(fields: [characterId], references: [id])
+}
+
+model CharacterPosition {
+  id          String    @id @default(uuid())
+  x           Int
+  y           Int
+  mapId       String
+  map         Map       @relation(fields: [mapId], references: [id])
+  characterId String    @unique
+  character   Character @relation(fields: [characterId], references: [id])
+}
+
+model Equipment {
+  id                    String    @id @default(uuid())
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  headArmorItemId       String?
+  necklaceItemId        String?
+  leftArmArmorItemId    String?
+  chestArmorItemId      String?
+  rightArmArmorItemId   String?
+  leftHandWeaponItemId  String?
+  rightHandWeaponItemId String?
+  legsArmorItemId       String?
+  handsRingItemId       String?
+  feetArmorItemId       String?
+  characterId           String    @unique
+  character             Character @relation(fields: [characterId], references: [id])
 }
 
 model Statistic {
-  id           String      @id @default(uuid())
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  health       Int
-  mana         Int
-  strength     Int
-  dexterity    Int
-  intelligence Int
-  monsters     Monster[]
-  characters   Character[]
+  id                  String     @id @default(uuid())
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  level               Int        @default(1)
+  experience          Int        @default(0)
+  nextLevelExperience Int        @default(100)
+  health              Int
+  mana                Int
+  strength            Int
+  dexterity           Int
+  intelligence        Int
+  monsters            Monster[]
+  characterId         String?    @unique
+  character           Character? @relation(fields: [characterId], references: [id])
 }
 
 enum ItemType {
@@ -83,12 +124,11 @@ model Item {
 
 model Inventory {
   id          String          @id @default(uuid())
-  quantity    Int
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
-  characterId String
+  characterId String          @unique
+  character   Character       @relation(fields: [characterId], references: [id])
   items       InventoryItem[]
-  characters  Character[]
 }
 
 model InventoryItem {
@@ -103,15 +143,16 @@ model InventoryItem {
 }
 
 model Map {
-  id         String      @id @default(uuid())
-  order      Int
-  name       String
-  characters Character[]
-  size_x     Int
-  size_y     Int
-  tiles      Tile[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id                String              @id @default(uuid())
+  order             Int
+  name              String
+  characters        Character[]
+  size_x            Int
+  size_y            Int
+  tiles             Tile[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  CharacterPosition CharacterPosition[]
 }
 
 enum TileType {

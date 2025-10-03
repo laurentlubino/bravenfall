@@ -1,13 +1,17 @@
-import { Inventory as InventoryType } from '@/data/characters';
+import { getCharacter } from '@/data/characters';
 
 type InventoryProps = {
-  inventory: InventoryType;
+  inventory: Awaited<ReturnType<typeof getCharacter>>['inventory'];
 };
 
 export const Inventory = ({ inventory }: InventoryProps) => {
+  if (!inventory) {
+    return null;
+  }
+
   return (
     <div className="w-full h-full border-2 border-gray-300 overflow-y-auto flex flex-row">
-      {inventory.map(({ item, quantity }) => (
+      {inventory.items.map(({ item, quantity }) => (
         <div key={item.id} className="h-24 w-24 border-2 border-gray-300">
           <img
             src={item.imageUrl}

@@ -1,10 +1,14 @@
-import { Stats as StatsType } from '@/data/characters';
+import { getCharacter } from '@/data/characters';
 
 type StatsProps = {
-  stats: StatsType;
+  stats: Awaited<ReturnType<typeof getCharacter>>['statistic'];
 };
 
 export const Stats = ({ stats }: StatsProps) => {
+  if (!stats) {
+    return null;
+  }
+
   return (
     <div className="w-full h-full border-2 border-gray-300">
       <div>

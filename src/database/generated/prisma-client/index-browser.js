@@ -132,25 +132,59 @@ exports.Prisma.CharacterScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId',
   name: 'name',
   class: 'class',
-  position_x: 'position_x',
-  position_y: 'position_y',
-  position_mapId: 'position_mapId',
-  statisticId: 'statisticId',
-  inventoryId: 'inventoryId'
+  userId: 'userId',
+  mapId: 'mapId'
+};
+
+exports.Prisma.ActionPointsScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  move: 'move',
+  attack: 'attack',
+  characterId: 'characterId'
+};
+
+exports.Prisma.CharacterPositionScalarFieldEnum = {
+  id: 'id',
+  x: 'x',
+  y: 'y',
+  mapId: 'mapId',
+  characterId: 'characterId'
+};
+
+exports.Prisma.EquipmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  headArmorItemId: 'headArmorItemId',
+  necklaceItemId: 'necklaceItemId',
+  leftArmArmorItemId: 'leftArmArmorItemId',
+  chestArmorItemId: 'chestArmorItemId',
+  rightArmArmorItemId: 'rightArmArmorItemId',
+  leftHandWeaponItemId: 'leftHandWeaponItemId',
+  rightHandWeaponItemId: 'rightHandWeaponItemId',
+  legsArmorItemId: 'legsArmorItemId',
+  handsRingItemId: 'handsRingItemId',
+  feetArmorItemId: 'feetArmorItemId',
+  characterId: 'characterId'
 };
 
 exports.Prisma.StatisticScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  level: 'level',
+  experience: 'experience',
+  nextLevelExperience: 'nextLevelExperience',
   health: 'health',
   mana: 'mana',
   strength: 'strength',
   dexterity: 'dexterity',
-  intelligence: 'intelligence'
+  intelligence: 'intelligence',
+  characterId: 'characterId'
 };
 
 exports.Prisma.ItemScalarFieldEnum = {
@@ -166,7 +200,6 @@ exports.Prisma.ItemScalarFieldEnum = {
 
 exports.Prisma.InventoryScalarFieldEnum = {
   id: 'id',
-  quantity: 'quantity',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   characterId: 'characterId'
@@ -255,6 +288,9 @@ exports.ItemType = exports.$Enums.ItemType = {
 exports.Prisma.ModelName = {
   User: 'User',
   Character: 'Character',
+  ActionPoints: 'ActionPoints',
+  CharacterPosition: 'CharacterPosition',
+  Equipment: 'Equipment',
   Statistic: 'Statistic',
   Item: 'Item',
   Inventory: 'Inventory',
